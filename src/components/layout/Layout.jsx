@@ -2,7 +2,9 @@ import { Avatar, Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
 import webtrixLogo from "../../assets/webtrix-logo.png";
+import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 import DropAreas from "./DropArea";
+
 
 const Layout = () => {
   return (
@@ -41,12 +43,10 @@ const Layout = () => {
         <Box
           sx={{
             width: 350,
-            borderLeft: "1px solid #ddd",
-            backgroundColor: "#fff",
             overflowY: "auto",
           }}
         >
-          Settings panel contents
+          <SettingsPanel />
         </Box>
       </Box>
     </Box>
