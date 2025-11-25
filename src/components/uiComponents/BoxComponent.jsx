@@ -6,6 +6,10 @@ const BoxComponent = ({ colCount = 1, height = "100px", bg = "#eaf2fe" }) => {
 
   return (
     <Box
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData("moduleType", "text");
+      }}
       sx={{
         flexShrink: 0,
         width: "100%",
@@ -16,6 +20,7 @@ const BoxComponent = ({ colCount = 1, height = "100px", bg = "#eaf2fe" }) => {
         border: "2px dashed #9db3d8",
         borderRadius: 3,
         boxSizing: "border-box",
+        cursor: "grab",
       }}
     >
       {cells.map((_, index) => (

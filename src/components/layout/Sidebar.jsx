@@ -91,7 +91,7 @@ const Sidebar = () => {
               <Box
                 sx={{
                   padding: 1,
-                  cursor: "pointer",
+                  cursor: item.title !== "Layout" ? "grab" : "pointer",
                   borderRadius: 2,
                   border: "2px solid #D3D3D3",
 
@@ -99,7 +99,9 @@ const Sidebar = () => {
                     border: "2px solid #90EE90",
                   },
                 }}
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() =>
+                  item.title === "Layout" ? setOpen((prev) => !prev) : ""
+                }
               >
                 {item.icon}
               </Box>
