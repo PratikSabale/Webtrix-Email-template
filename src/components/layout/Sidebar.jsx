@@ -130,6 +130,7 @@ const Sidebar = () => {
                 gap: 1,
               }}
             >
+              
               {layoutMenu.map((item, index) => {
                 const bgColor =
                   selectedLayout === index ? "#ffffff" : "#D3D3D3";
