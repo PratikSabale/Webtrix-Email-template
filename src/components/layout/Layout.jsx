@@ -34,9 +34,8 @@ const Layout = () => {
             backgroundColor: "#f6f6f6",
           }}
         >
-          {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}.
-            <DropAreas />
-
+          {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}
+          <DropAreas />
         </Box>
 
         <Box

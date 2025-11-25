@@ -13,8 +13,10 @@ import {
   Image,
   Layout,
   RadioButton,
+  Rows,
   SelectionAll,
   ShareNetwork,
+  SquaresFour,
   TextOutdent,
   TextT,
   User,
@@ -22,6 +24,10 @@ import {
   X,
 } from "phosphor-react";
 import React, { useState } from "react";
+import GeneralModules from "../../utils/sidebarhelper/GeneralModules";
+import Layouts from "../../utils/sidebarhelper/Layouts";
+import MyModules from "../../utils/sidebarhelper/MyModules";
+import TemplateModules from "../../utils/sidebarhelper/TemplateModules";
 
 const CustomWidthTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -36,6 +42,7 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
 const Sidebar = () => {
   const [open, setOpen] = useState(null);
   const [selectedLayout, setSelectedLayout] = useState(0);
+
   const sidebarMenu = [
     { title: "Layout", icon: <Layout size={25} /> },
     { title: "Image", icon: <Image size={25} /> },
@@ -55,6 +62,7 @@ const Sidebar = () => {
     { title: "My modules", icon: <User size={25} /> },
     { title: "Template Modules", icon: <SelectionAll size={25} /> },
   ];
+
   return (
     <>
       <Box
@@ -69,6 +77,7 @@ const Sidebar = () => {
           py: 5,
           gap: 3,
           position: "relative",
+          scrollbarWidth: "thin",
         }}
       >
         {sidebarMenu.map((item, index) => {
@@ -101,6 +110,7 @@ const Sidebar = () => {
       {open && (
         <Box
           sx={{
+            height: "80%",
             position: "absolute",
             top: 100,
             left: 10,
@@ -159,20 +169,12 @@ const Sidebar = () => {
               })}
             </Box>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-            <input
-              style={{
-                borderRadius: 10,
-                padding: 10,
-                background: "#D3D3D3",
-                width: 250,
-                outline: "none",
-                border: "none",
-              }}
-              placeholder="Search by name,#tag, or moduleID"
-              onFocus={(e) => (e.target.style.outlineColor = "grren")}
-              onBlur={(e) => (e.target.style.outline = "none")}
-            />
+
+          <Box sx={{ height: "90%" }}>
+            {selectedLayout === 0 && <GeneralModules />}
+            {selectedLayout === 1 && <Layouts />}
+            {selectedLayout === 2 && <MyModules />}
+            {selectedLayout === 3 && <TemplateModules />}
           </Box>
         </Box>
       )}
