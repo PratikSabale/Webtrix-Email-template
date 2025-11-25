@@ -2,7 +2,7 @@ import { Avatar, Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
 import webtrixLogo from "../../assets/webtrix-logo.png";
-import DropAreas from "./DropArea";
+import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 
 const Layout = () => {
   return (
@@ -34,20 +34,16 @@ const Layout = () => {
             backgroundColor: "#f6f6f6",
           }}
         >
-          {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}.
-            <DropAreas />
-
+          <Box sx={{ width: 600, p: 3 }}>central editable block</Box>
         </Box>
 
         <Box
           sx={{
             width: 350,
-            borderLeft: "1px solid #ddd",
-            backgroundColor: "#fff",
             overflowY: "auto",
           }}
         >
-          Settings panel contents
+          <SettingsPanel />
         </Box>
       </Box>
     </Box>
