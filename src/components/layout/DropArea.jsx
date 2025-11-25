@@ -1,68 +1,63 @@
 import { Box, Typography } from "@mui/material";
 import { DownloadSimple } from "phosphor-react";
 import React from "react";
+import DropBox from "./DropBox";
 
-const DropBox = ({ height }) => (
-  <Box
-    sx={{
-      //   flex: 1,
-      height: height,
-      border: "2px dashed #9db3d8",
-      backgroundColor: "#eaf2fe",
-      borderRadius: 1,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#6d8ac7",
-    }}
-  >
-    <Box sx={{ textAlign: "center" }}>
-      <DownloadSimple size={24} weight="duotone" />
-      <Typography mt={1} fontSize={14}>
-        Drop content here
-      </Typography>
-    </Box>
-  </Box>
-);
 
 const DropAreas = () => {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 3,
-        backgroundColor: "#fff", // white background
-        p: 3, // padding on all sides (theme spacing → 24px)           // optional: round edges
-        width: 700,
-      }}
-    >
-      <Box sx={{ display: "flex", gap: 3 }}>
-        <Box sx={{ width: 231 }}>
-          <DropBox height={120} />
-        </Box>
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
+                backgroundColor: "#fff",   // white background
+                 p: 3 ,   // responsive padding
+                  width: "100%",
+        maxWidth: 700,
+        mx: "auto",
+            }}
+        >
+                {/* Row 1  */}
 
-        <Box sx={{ width: 440 }}>
-          <DropBox height={120} />
-        </Box>
-      </Box>
+            <Box sx={{ display: "flex", gap: 2,width:"100%" }}>
+                <Box sx={{width:{
+                    xs:"35%",
+                    sm:"35%",
+                    md:231,
+                }}}>
+                    <DropBox height={120} />
+                </Box>
 
-      <DropBox height={150} />
-      <Box sx={{ display: "flex", gap: 3 }}>
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ width: 355 }}>
-            <DropBox height={140} />
-          </Box>
-        </Box>
+                <Box sx={{width:{
+                    xs:"65%",
+                    sm:"65%",
+                    md:452,
+                }}}>
+                    <DropBox height={120} />
+                </Box>
+            </Box>
 
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ width: 321 }}>
-            <DropBox height={140} />
-          </Box>
+                           {/* ROW 2 */}
+            <DropBox height={150} />
+
+             {/* ROW 3 */}
+
+            <Box sx={{ display: "flex", gap: 2,width:"100%",}}>
+                <Box sx={{ display: "flex", }}>
+                    <Box sx={{width:{xs:"100%",sm:"100%",md:335}}}>
+                        <DropBox height={1} />
+                    </Box>
+                </Box>
+
+                <Box sx={{ display: "flex", }}>
+                    <Box sx={{width:{xs:"100%",sm:"100%",md:351,}}}>
+                        <DropBox height={140} />
+                    </Box>
+                </Box>
+            </Box>
         </Box>
-      </Box>
-    </Box>
-  );
+    );
 };
 
 export default DropAreas;
