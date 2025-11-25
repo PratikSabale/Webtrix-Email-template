@@ -8,7 +8,7 @@ import {
     RadioButton,
     
 } from "phosphor-react";
-// import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 import React, { useState } from "react";
 
@@ -20,7 +20,7 @@ const DropBox = () => {
 
         const actions = [
     {
-    //   icon: <DeleteIcon color="error" />,
+      icon: <DeleteIcon color="error" />,
       name: "Clear Container",
       action: clearBox,
     },
@@ -58,15 +58,17 @@ const DropBox = () => {
         <SpeedDial
           ariaLabel="DropBox Actions"
           sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            "& .MuiSpeedDial-fab": {
-              width: 40,
-              height: 40,
-              backgroundColor: "#fff",
-            },
-          }}
+  position: "absolute",
+  left: -20,               // move outside left
+  top: "50%",              // align vertical middle
+  transform: "translateY(-50%)",
+  "& .MuiSpeedDial-fab": {
+    width: 40,
+    height: 40,
+    backgroundColor: "#87CEEB",
+  },
+}}
+
           icon={<SpeedDialIcon />}
         >
           {actions.map((item) => (
