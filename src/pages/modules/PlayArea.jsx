@@ -2,9 +2,9 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { droppedItemsState } from "../../state/dnd/dndState";
 import { useRecoilState } from "recoil";
-import BoxComponent from "../uiComponents/BoxComponent "; // ✅ FIX IMPORT
+import BoxComponent from "../../components/uiComponents/BoxComponent ";
 
-const DropAreas = () => {
+const PlayArea = () => {
   const [items, setItems] = useRecoilState(droppedItemsState);
 
   const handleDrop = (e) => {
@@ -24,20 +24,23 @@ const DropAreas = () => {
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
       sx={{
-        width: "60%",
-        height: "70%",
+        maxWidth: "60%",
+        maxHeight: "80%",
+        minWidth:"60%",
+        minHeight:"80%",
         background: "#fff",
         p: 2.5,
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         position: "relative",
         left: 60,
+        overflow:"hidden"
       }}
     >
       <Typography variant="h6" sx={{ mb: 1 }}>
         Dropped Items
       </Typography>
 
-      {items.map((item) => (
+      {items.slice(0,4).map((item) => (
         <BoxComponent
           key={item.instanceId}
           gridCount={item.gridCount}
@@ -48,4 +51,4 @@ const DropAreas = () => {
   );
 };
 
-export default DropAreas;
+export default PlayArea;
