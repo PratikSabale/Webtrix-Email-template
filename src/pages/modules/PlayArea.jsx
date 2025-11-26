@@ -2,9 +2,9 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { droppedItemsState } from "../../state/dnd/dndState";
 import { useRecoilState } from "recoil";
-import BoxComponent from "../uiComponents/BoxComponent "; // ✅ FIX IMPORT
+import BoxComponent from "../../components/uiComponents/BoxComponent ";
 
-const DropAreas = () => {
+const PlayArea = () => {
   const [items, setItems] = useRecoilState(droppedItemsState);
 
   const handleDrop = (e) => {
@@ -51,4 +51,4 @@ const DropAreas = () => {
   );
 };
 
-export default DropAreas;
+export default PlayArea;
