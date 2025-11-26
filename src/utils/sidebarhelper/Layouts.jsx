@@ -21,10 +21,10 @@ const Layouts = () => {
         boxSizing: "border-box",
       }}
     >
-      <BoxComponent gridCount={1} />
-      <BoxComponent gridCount={2} />
-      <BoxComponent gridCount={3} />
-      <BoxComponent gridCount={4} />
+      <BoxComponent gridCount={1} isDropped={false} />
+      <BoxComponent gridCount={2} isDropped={false} />
+      <BoxComponent gridCount={3} isDropped={false} />
+      <BoxComponent gridCount={4} isDropped={false} />
     </Box>
   );
 };
