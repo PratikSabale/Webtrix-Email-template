@@ -69,6 +69,19 @@ const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
     setItems((prev) => prev.filter((item) => item.instanceId !== instanceId));
   };
 
+  const handleDropInside = (idx, e) => {
+    e.preventDefault();
+    const data = JSON.parse(e.dataTransfer.getData("application/json"));
+
+    if (data.mode) {
+      setModes((prev) => {
+        const copy = [...prev];
+        copy[idx] = { type: data.mode, file: null, value: "" };
+        return copy;
+      });
+    }
+  };
+
   return (
     <Box
       draggable={!isDropped}
@@ -152,6 +165,8 @@ const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
         {Array.from({ length: gridCount }).map((_, idx) => (
           <Box
             key={idx}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => handleDropInside(idx, e)}
             sx={{
               height: isDropped ? 100 : 50,
               backgroundColor:
@@ -251,45 +266,45 @@ const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
               </Box>
             )}
 
-              {/* {isDropped && modes[idx].type === "empty" && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    m: 5,
-                    gap: 3,
-                  }}
-                >
-                  <Tooltip title="Image" placement="top">
-                    <Box
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => updateMode(idx, "image")}
-                    >
-                      <ImageIcon size={22} color="#6d8ac7" />
-                    </Box>
-                  </Tooltip>
+            {isDropped && modes[idx].type === "empty" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  m: 5,
+                  gap: 3,
+                }}
+              >
+                <Tooltip title="Image" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => updateMode(idx, "image")}
+                  >
+                    <ImageIcon size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
 
-                  <Tooltip title="Text" placement="top">
-                    <Box
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => updateMode(idx, "text")}
-                    >
-                      <TextT size={22} color="#6d8ac7" />
-                    </Box>
-                  </Tooltip>
+                <Tooltip title="Text" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => updateMode(idx, "text")}
+                  >
+                    <TextT size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
 
-                  <Tooltip title="Button" placement="top">
-                    <Box
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => updateMode(idx, "button")}
-                    >
-                      <RadioButton size={22} color="#6d8ac7" />
-                    </Box>
-                  </Tooltip>
-                </Box>
-              )} */}
+                <Tooltip title="Button" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => updateMode(idx, "button")}
+                  >
+                    <RadioButton size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
+              </Box>
+            )}
           </Box>
         ))}
       </Box>
