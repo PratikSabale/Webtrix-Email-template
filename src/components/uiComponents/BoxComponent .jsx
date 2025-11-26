@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -11,12 +11,14 @@ import {
   Image as ImageIcon,
   TextT,
   RadioButton,
-  Share,
   Minus,
   List,
 } from "phosphor-react";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useRecoilState } from "recoil";
+import { droppedItemsState } from "../../state/dnd/dndState";
 
 const actions = [
   { icon: <Minus size={32} />, name: "1 column", count: 1 },
@@ -25,9 +27,8 @@ const actions = [
   { icon: <DensitySmallIcon />, name: "4 column", count: 4 },
 ];
 
-const BoxComponent = ({ gridCount, isDropped }) => {
-  const [childGrid, setChildGrid] = useState(null);
-  console.log("data", childGrid);
+const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
+  const [items, setItems] = useRecoilState(droppedItemsState);
 
   const [modes, setModes] = useState(
     Array.from({ length: gridCount }, () => ({
@@ -36,6 +37,16 @@ const BoxComponent = ({ gridCount, isDropped }) => {
       value: "",
     }))
   );
+
+  useEffect(() => {
+    if (!mode) return;
+
+    setModes((prev) => {
+      const copy = [...prev];
+      copy[0].type = mode;
+      return copy;
+    });
+  }, [mode]);
 
   const updateMode = (idx, value) => {
     setModes((prev) => {
@@ -52,6 +63,10 @@ const BoxComponent = ({ gridCount, isDropped }) => {
       copy[idx].value = value;
       return copy;
     });
+  };
+
+  const deleteBox = () => {
+    setItems((prev) => prev.filter((item) => item.instanceId !== instanceId));
   };
 
   return (
@@ -74,39 +89,57 @@ const BoxComponent = ({ gridCount, isDropped }) => {
       }}
     >
       {isDropped && (
-        <SpeedDial
-          ariaLabel="SpeedDial example"
-          icon={<SpeedDialIcon />}
-          direction="right"
+        <Box
           sx={{
-            pb: 1,
-            "& .MuiFab-root": {
-              width: 36,
-              height: 36,
-              minHeight: 36,
-            },
-          }}
-          fabProps={{
-            sx: {
-              width: 36,
-              height: 36,
-              minHeight: 36,
-            },
+            display: "flex",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: 1,
           }}
         >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={() => {
-                setChildGrid(action.count);
+          <IconButton aria-label="delete" size="small" onClick={deleteBox}>
+            <DeleteIcon fontSize="large" color="error" />
+          </IconButton>
 
-                //  /   setChildGrid(null);
-              }}
-            />
-          ))}
-        </SpeedDial>
+          <SpeedDial
+            ariaLabel="SpeedDial example"
+            icon={<SpeedDialIcon />}
+            direction="right"
+            sx={{
+              "& .MuiFab-root": {
+                width: 36,
+                height: 36,
+                minHeight: 36,
+              },
+            }}
+            fabProps={{
+              sx: {
+                width: 36,
+                height: 36,
+                minHeight: 36,
+              },
+            }}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => {
+                  setItems((prev) => [
+                    ...prev,
+                    {
+                      instanceId: crypto.randomUUID(),
+                      parentId: instanceId,
+                      type: "child",
+                      gridCount: action.count,
+                    },
+                  ]);
+                }}
+              />
+            ))}
+          </SpeedDial>
+        </Box>
       )}
 
       <Box
@@ -218,49 +251,48 @@ const BoxComponent = ({ gridCount, isDropped }) => {
               </Box>
             )}
 
-            {isDropped && modes[idx].type === "empty" && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  m: 5,
-                  gap: 3,
-                }}
-              >
-                <Tooltip title="Image" placement="top">
-                  <Box
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => updateMode(idx, "image")}
-                  >
-                    <ImageIcon size={22} color="#6d8ac7" />
-                  </Box>
-                </Tooltip>
+              {/* {isDropped && modes[idx].type === "empty" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    m: 5,
+                    gap: 3,
+                  }}
+                >
+                  <Tooltip title="Image" placement="top">
+                    <Box
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => updateMode(idx, "image")}
+                    >
+                      <ImageIcon size={22} color="#6d8ac7" />
+                    </Box>
+                  </Tooltip>
 
-                <Tooltip title="Text" placement="top">
-                  <Box
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => updateMode(idx, "text")}
-                  >
-                    <TextT size={22} color="#6d8ac7" />
-                  </Box>
-                </Tooltip>
+                  <Tooltip title="Text" placement="top">
+                    <Box
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => updateMode(idx, "text")}
+                    >
+                      <TextT size={22} color="#6d8ac7" />
+                    </Box>
+                  </Tooltip>
 
-                <Tooltip title="Button" placement="top">
-                  <Box
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => updateMode(idx, "button")}
-                  >
-                    <RadioButton size={22} color="#6d8ac7" />
-                  </Box>
-                </Tooltip>
-              </Box>
-            )}
+                  <Tooltip title="Button" placement="top">
+                    <Box
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => updateMode(idx, "button")}
+                    >
+                      <RadioButton size={22} color="#6d8ac7" />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              )} */}
           </Box>
         ))}
       </Box>
-      {childGrid && <BoxComponent gridCount={childGrid} isDropped={true} />}
     </Box>
   );
 };
