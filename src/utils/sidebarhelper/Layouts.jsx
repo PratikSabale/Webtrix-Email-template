@@ -25,6 +25,7 @@ const Layouts = () => {
       <BoxComponent gridCount={2} isDropped={false} />
       <BoxComponent gridCount={3} isDropped={false} />
       <BoxComponent gridCount={4} isDropped={false} />
+      <BoxComponent gridCount={5} isDropped={false} />
     </Box>
   );
 };
