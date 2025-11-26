@@ -8,49 +8,46 @@ import { useRecoilState } from "recoil";
 
 const DropAreas = () => {
     const [items, setItems] = useRecoilState(droppedItemsState);
-    const handleDrop = (e) => {
-        e.preventDefault();
-        const data = JSON.parse(e.dataTransfer.getData("application/json"));
 
-        // copy instead of move
-        const newItem = {
-            ...data,
-            instanceId: Date.now(), // unique copy ID
-            position: { x: 100, y: 100 }, // default position
-        };
+const handleDrop = (e) => {
+  e.preventDefault();
+  const data = JSON.parse(e.dataTransfer.getData("application/json"));
 
-        setItems((prev) => [...prev, newItem]);
-    };
+  const newItem = {
+    ...data,
+    instanceId: Date.now(),
+  };
+
+  setItems((prev) => [...prev, newItem]);
+};
 
 
     return (
 
-        <div
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            style={{
-              width:"50%",
-                background: "#f5f5f5",
-                padding: 20,
-            
-            }}
-        >
-            <h3>Dropped Items</h3>
+      <Box
+  onDragOver={(e) => e.preventDefault()}
+  onDrop={handleDrop}
+  sx={{
+    width: "60%",
+    height: "70%",
+    background: "#fff",
+    p: 2.5, // padding: 20px
+    boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+    position:"relative",
+    left:60,
+  }}
+>
+  <Typography variant="h6" sx={{ mb: 1 }}>
+    Dropped Items
+  </Typography>
 
-            {items.map((item) => (
-                <div
-                    key={item.instanceId}
-                    style={{
-                        padding: 15,
-                        background: "white",
-                        marginTop: 10,
-                        borderRadius: 8,
-                    }}
-                >
-                    {item.label} (copy)
-                </div>
-            ))}
-        </div>
+{items.map((item) => (
+    <BoxComponent 
+        key={item.instanceId}
+        colCount={item.colCount}
+    />
+))}
+</Box>
 
         // <Box
         //     sx={{
