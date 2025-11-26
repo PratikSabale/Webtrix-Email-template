@@ -8,7 +8,7 @@ import BoxComponent from "../../../components/uiComponents/BoxComponent ";
 const PlayArea = () => {
   const [items, setItems] = useRecoilState(droppedItemsState);
 
-  const [open, setOpen] = useState(false); // modal open/close state
+  const [open, setOpen] = useState(false);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -22,7 +22,6 @@ const PlayArea = () => {
     setItems((prev) => [...prev, newItem]);
   };
 
-  // Add layout container with selected gridCount
   const addLayout = (gridCount) => {
     const newBox = {
       type: "container",
@@ -51,6 +50,7 @@ const PlayArea = () => {
         }}
       >
         {/* -------------------- EXISTING DROPPED ITEMS -------------------- */}
+
         {items.map((item) => (
           <BoxComponent
             key={item.instanceId}
@@ -58,7 +58,6 @@ const PlayArea = () => {
             isDropped={true}
           />
         ))}
-
         {/* -------------------- ADD CONTAINER BUTTON -------------------- */}
         <Box
           sx={{
