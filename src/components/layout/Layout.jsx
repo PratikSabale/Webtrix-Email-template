@@ -1,10 +1,12 @@
 import { Avatar, Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
+import PlayArea from "../../pages/modules/PlayArea";
 
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 // import DropAreas from "./DropArea";
 import Nav from "./Nav";
+
 
 const Layout = () => {
   return (
@@ -38,6 +40,7 @@ const Layout = () => {
         >
           {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}
           {/* <DropAreas /> */}
+          <PlayArea/>
         </Box>
 
         <Box
