@@ -14,25 +14,7 @@ const PlayArea = () => {
     e.preventDefault();
     const data = JSON.parse(e.dataTransfer.getData("application/json"));
 
-    // --------------------
-    // CASE 1: Sidebar drop (contains mode)
-    // --------------------
-    if (data.mode) {
-      setItems((prev) => [
-        ...prev,
-        {
-          instanceId: crypto.randomUUID(),
-          type: "parent",
-          mode: data.mode,
-          gridCount: 1,
-        },
-      ]);
-      return;
-    }
-
-    // --------------------
-    // CASE 2: Layout box drop (contains gridCount)
-    // --------------------
+    // ONLY create a parent/container if gridCount exists
     if (data.gridCount) {
       setItems((prev) => [
         ...prev,
@@ -43,6 +25,9 @@ const PlayArea = () => {
         },
       ]);
     }
+
+    // DO NOT create a new parent if it's a sidebar mode
+    // The mode will be applied inside BoxComponent via onDrop
   };
 
   const addLayout = (gridCount) => {
