@@ -45,7 +45,7 @@ const BoxComponent = ({ gridCount, isDropped }) => {
         borderRadius: 3,
         cursor: "grab",
         mb: 2,
-        border: "1px solid #e5e7eb",
+        border: isDropped ? "" : "1px solid #e5e7eb",
       }}
     >
       <Box
@@ -69,7 +69,6 @@ const BoxComponent = ({ gridCount, isDropped }) => {
               p: modes[idx].type !== "empty" ? 1 : 0,
             }}
           >
-            {/* Selected Mode Renderer */}
             {isDropped && modes[idx].type !== "empty" && (
               <Box
                 sx={{
@@ -80,20 +79,28 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                   alignItems: "center",
                 }}
               >
-                {/* IMAGE MODE */}
                 {modes[idx].type === "image" && (
                   <>
                     {modes[idx].file ? (
-                      <img
-                        src={modes[idx].file}
-                        alt="uploaded"
+                      <div
                         style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
+                          width: "200px",
+                          height: "200px",
                           borderRadius: 6,
+                          overflow: "hidden",
+                          border: "1px solid #ccc",
                         }}
-                      />
+                      >
+                        <img
+                          src={modes[idx].file}
+                          alt="uploaded"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
                     ) : (
                       <input
                         type="file"
@@ -115,7 +122,6 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                   </>
                 )}
 
-                {/* SIMPLE TEXT MODE */}
                 {modes[idx].type === "text" && (
                   <input
                     type="text"
@@ -134,7 +140,6 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                   />
                 )}
 
-                {/* BUTTON MODE */}
                 {modes[idx].type === "button" && (
                   <button
                     style={{
@@ -152,7 +157,6 @@ const BoxComponent = ({ gridCount, isDropped }) => {
               </Box>
             )}
 
-            {/* EMPTY MODE (icon selection) */}
             {isDropped && modes[idx].type === "empty" && (
               <Box
                 sx={{
