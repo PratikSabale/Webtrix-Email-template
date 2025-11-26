@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Monitor, PhoneAndroid } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Preview = () => {
@@ -57,8 +57,11 @@ const Preview = () => {
               backgroundColor: "#eeeeee",
               fontSize: 14,
               fontWeight: 600,
+              display: "flex",
+              gap: 1
             }}
           >
+            <Monitor fontSize="small" /> 
             Desktop Preview
           </Box>
 
@@ -87,8 +90,11 @@ const Preview = () => {
               fontSize: 14,
               fontWeight: 600,
               textAlign: "center",
+              display: "flex",
+              gap: 1
             }}
           >
+            <PhoneAndroid fontSize="small" /> 
             Mobile Preview
           </Box>
 
