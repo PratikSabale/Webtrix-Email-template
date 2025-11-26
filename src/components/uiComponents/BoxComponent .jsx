@@ -1,8 +1,34 @@
 import React, { useState } from "react";
-import { Box, Tooltip } from "@mui/material";
-import { Image as ImageIcon, TextT, RadioButton } from "phosphor-react";
+import {
+  Box,
+  IconButton,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Tooltip,
+} from "@mui/material";
+import {
+  Image as ImageIcon,
+  TextT,
+  RadioButton,
+  Share,
+  Minus,
+  List,
+} from "phosphor-react";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
+import DensitySmallIcon from "@mui/icons-material/DensitySmall";
+
+const actions = [
+  { icon: <Minus size={32} />, name: "1 column", count: 1 },
+  { icon: <DragHandleIcon />, name: "2 column", count: 2 },
+  { icon: <List size={32} />, name: "3 column", count: 3 },
+  { icon: <DensitySmallIcon />, name: "4 column", count: 4 },
+];
 
 const BoxComponent = ({ gridCount, isDropped }) => {
+  const [childGrid, setChildGrid] = useState(null);
+  console.log("data", childGrid);
+
   const [modes, setModes] = useState(
     Array.from({ length: gridCount }, () => ({
       type: "empty",
@@ -44,13 +70,45 @@ const BoxComponent = ({ gridCount, isDropped }) => {
         backgroundColor: "#ffffff",
         borderRadius: 3,
         cursor: "grab",
-        mb: 2,
         border: isDropped ? "" : "1px solid #e5e7eb",
       }}
     >
+      {isDropped && (
+        <SpeedDial
+          ariaLabel="SpeedDial example"
+          icon={<SpeedDialIcon />}
+          direction="right"
+          sx={{
+            pb: 1,
+            "& .MuiFab-root": {
+              width: 36,
+              height: 36,
+              minHeight: 36,
+            },
+          }}
+          fabProps={{
+            sx: {
+              width: 36,
+              height: 36,
+              minHeight: 36,
+            },
+          }}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={() => {
+                setChildGrid(action.count);
 
-      {/* speed dial code will come here  */}
-      
+                //  /   setChildGrid(null);
+              }}
+            />
+          ))}
+        </SpeedDial>
+      )}
+
       <Box
         sx={{
           display: "grid",
@@ -202,6 +260,7 @@ const BoxComponent = ({ gridCount, isDropped }) => {
           </Box>
         ))}
       </Box>
+      {childGrid && <BoxComponent gridCount={childGrid} isDropped={true} />}
     </Box>
   );
 };
