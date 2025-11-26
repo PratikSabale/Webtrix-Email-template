@@ -4,6 +4,7 @@ import React from "react";
 import DropBox from "./DropBox";
 import { droppedItemsState } from "../../state/dnd/dndState";
 import { useRecoilState } from "recoil";
+import BoxComponent from "../uiComponents/BoxComponent ";
 
 
 const DropAreas = () => {
