@@ -1,7 +1,7 @@
 import { Avatar, Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
-import PlayArea from "../../pages/modules/PlayArea";
+import PlayArea from "../../pages/modules/PlayArea/PlayArea";
 
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 // import DropAreas from "./DropArea";
