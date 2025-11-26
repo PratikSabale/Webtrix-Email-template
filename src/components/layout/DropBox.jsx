@@ -15,8 +15,12 @@ import React, { useState } from "react";
 const DropBox = () => {
     const [mode, setMode] = useState("empty"); // empty | image | text | button
     const [hover, setHover] = useState(false);
+const [layoutCols, setLayoutCols] = useState(null);
 
-      const clearBox = () => setMode("empty");
+       const clearBox = () => {
+    setMode("empty");
+    setLayoutCols(null);
+  };
 
         const actions = [
     {
@@ -30,6 +34,14 @@ const DropBox = () => {
         <Box
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+              onDragOver={(e) => e.preventDefault()}
+  onDrop={(e) => {
+      const cols = e.dataTransfer.getData("layoutCols");
+      if (cols) {
+          setLayoutCols(Number(cols));
+          setMode("layout");
+      }
+  }}
             sx={{
                 height: mode === "empty" ? 120 : "auto",
                 transition: "all 0.3s ease",
@@ -51,7 +63,8 @@ const DropBox = () => {
             
         >
 
-            
+
+  
             
  {/* SPEED DIAL — only when mode is NOT empty */}
       {mode !== "empty" && (
@@ -87,54 +100,88 @@ const DropBox = () => {
 
 
             {/* ---------------- Hover Toolbar with Animation ---------------- */}
-            {mode === "empty" && (
-                <Box
-                    sx={{
-                        position: "absolute",
-                        bottom: 10,
-                        left: "50%",
-                        transform: hover
-                            ? "translate(-50%, 0)"
-                            : "translate(-50%, 10px)",
-                        opacity: hover ? 1 : 0,
-                        transition: "all 0.3s ease",
-                        display: "flex",
-                        gap: 2,
-                        backgroundColor: "#fff",
-                        px: 2,
-                        py: 1,
-                        borderRadius: 1,
-                        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                        pointerEvents: hover ? "auto" : "none",
-                    }}
-                >
-                    <Box sx={{ cursor: "pointer" }} onClick={() => setMode("image")}>
-                        <ImageIcon size={22} color="#6d8ac7" />
-                    </Box>
-                    <Box sx={{ cursor: "pointer" }} onClick={() =>  setMode("text")}>
-                        <TextT size={22} color="#6d8ac7" />
-                    </Box>
-                    <Box sx={{ cursor: "pointer" }} onClick={() => setMode("button")}>
-                        <RadioButton size={22} color="#6d8ac7" />
-                    </Box>
-                </Box>
-            )}
+          {(mode === "empty" || mode === "layout") && (
+    <Box
+        sx={{
+            position: "absolute",
+            bottom: 10,
+            left: "50%",
+            transform: hover
+                ? "translate(-50%, 0)"
+                : "translate(-50%, 10px)",
+            opacity: hover ? 1 : 0,
+            transition: "all 0.3s ease",
+            display: "flex",
+            gap: 2,
+            backgroundColor: "#fff",
+            px: 2,
+            py: 1,
+            borderRadius: 1,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+            pointerEvents: hover ? "auto" : "none",
+        }}
+    >
+        <Box sx={{ cursor: "pointer" }} onClick={() => setMode("image")}>
+            <ImageIcon size={22} color="#6d8ac7" />
+        </Box>
+        <Box sx={{ cursor: "pointer" }} onClick={() => setMode("text")}>
+            <TextT size={22} color="#6d8ac7" />
+        </Box>
+        <Box sx={{ cursor: "pointer" }} onClick={() => setMode("button")}>
+            <RadioButton size={22} color="#6d8ac7" />
+        </Box>
+    </Box>
+)}
+
 
             {/* ---------------- Default Empty Mode ---------------- */}
-            {mode === "empty" && (
-                <Box
-                    sx={{
-                        textAlign: "center",
-                        transition: "all 0.3s ease",
-                        transform: hover ? "translateY(-10px)" : "translateY(0px)",
-                    }}
-                >
-                    <DownloadSimple size={24} weight="duotone" />
-                    <Typography mt={1} fontSize={14}>
-                        Drop content here
-                    </Typography>
-                </Box>
-            )}
+           {/* ---------------- EMPTY MODE ---------------- */}
+{mode === "empty" && (
+    <Box
+        sx={{
+            textAlign: "center",
+            transition: "all 0.3s ease",
+            transform: hover ? "translateY(-10px)" : "translateY(0px)",
+        }}
+    >
+        <DownloadSimple size={24} weight="duotone" />
+        <Typography mt={1} fontSize={14}>
+            Drop content here
+        </Typography>
+    </Box>
+)}
+
+{/* ---------------- LAYOUT MODE (SHOW GRID) ---------------- */}
+{mode === "layout" && (
+  <Box
+    sx={{
+      width: "100%",
+      display: "grid",
+      gap: 1.5,
+      gridTemplateColumns: `repeat(${layoutCols}, 1fr)`,
+      transition: "all 0.3s ease",
+    }}
+  >
+    {Array.from({ length: layoutCols }).map((_, i) => (
+      <Box
+        key={i}
+        sx={{
+          height: 80,
+          backgroundColor: "#eaf2fe",
+          border: "1px dashed #9db3d8",
+          borderRadius: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography fontSize={12} color="#6d8ac7">
+          Column {i + 1}
+        </Typography>
+      </Box>
+    ))}
+  </Box>
+)}
 
             {/* ---------------- Image Mode ---------------- */}
             {mode === "image" && (

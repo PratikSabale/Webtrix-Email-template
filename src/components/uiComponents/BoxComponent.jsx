@@ -8,7 +8,7 @@ const BoxComponent = ({ colCount = 1, height = "100px", bg = "#eaf2fe" }) => {
     <Box
       draggable
       onDragStart={(e) => {
-        e.dataTransfer.setData("moduleType", "text");
+        e.dataTransfer.setData("layoutCols", colCount);
       }}
       sx={{
         flexShrink: 0,
