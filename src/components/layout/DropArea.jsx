@@ -29,10 +29,10 @@ const DropAreas = () => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             style={{
-                flex: 1,
+              width:"50%",
                 background: "#f5f5f5",
                 padding: 20,
-                minHeight: "100vh",
+            
             }}
         >
             <h3>Dropped Items</h3>
