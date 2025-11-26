@@ -1,9 +1,9 @@
-import { Avatar, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
 
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
-import DropAreas from "./DropArea";
+
 import Nav from "./Nav";
 
 const Layout = () => {
@@ -35,10 +35,7 @@ const Layout = () => {
             overflowY: "auto",
             backgroundColor: "#f6f6f6",
           }}
-        >
-          {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}
-          <DropAreas />
-        </Box>
+        ></Box>
 
         <Box
           sx={{
