@@ -1,9 +1,10 @@
 import { Avatar, Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
-import webtrixLogo from "../../assets/webtrix-logo.png";
+
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 import DropAreas from "./DropArea";
+import Nav from "./Nav";
 
 const Layout = () => {
   return (
@@ -19,7 +20,7 @@ const Layout = () => {
           backgroundColor: "#fff",
         }}
       >
-        <Avatar src={webtrixLogo} />
+        <Nav />
       </Box>
 
       <Box sx={{ flex: 1, display: "flex", overflow: "hidden" }}>
