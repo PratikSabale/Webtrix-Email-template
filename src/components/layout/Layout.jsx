@@ -5,7 +5,6 @@ import webtrixLogo from "../../assets/webtrix-logo.png";
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
 import DropAreas from "./DropArea";
 
-
 const Layout = () => {
   return (
     <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
