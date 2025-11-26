@@ -48,6 +48,9 @@ const BoxComponent = ({ gridCount, isDropped }) => {
         border: isDropped ? "" : "1px solid #e5e7eb",
       }}
     >
+
+      {/* speed dial code will come here  */}
+      
       <Box
         sx={{
           display: "grid",
