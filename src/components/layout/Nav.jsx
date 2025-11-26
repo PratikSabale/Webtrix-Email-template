@@ -2,7 +2,8 @@ import { Avatar, Box, IconButton } from "@mui/material";
 import React from "react";
 import webtrixLogo from "../../assets/webtrix-logo.png";
 import { useNavigate } from "react-router-dom";
-import { PreviewRounded } from "@mui/icons-material";
+// import { PreviewRounded } from "@mui/icons-material";
+import { FaEye } from "react-icons/fa";
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Nav = () => {
       />
 
       <IconButton onClick={() => navigate("/preview")} >
-        <PreviewRounded sx={{fontSize: 32}} />
+        <FaEye sx={{fontSize: 32}} />
       </IconButton>
     </Box>
   );
