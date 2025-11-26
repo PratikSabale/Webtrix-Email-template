@@ -70,7 +70,7 @@ const SettingsPanel = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: "90%", padding: 1 }}>
-      {/* TAB BUTTONS */}
+       {/* TAB BUTTONS */}
       <Box sx={{ display: "flex", flexDirection: "row", background: "#D3D3D3", width: "100%", justifyContent: "space-evenly", borderRadius: 3, padding: 1, mb: 2 }}>
         {settingControls.map((item, index) => {
           const bgColor = activeTab === item.name ? "white" : "#D3D3D3";
@@ -273,8 +273,48 @@ const SettingsPanel = () => {
           )}
         </Box>
       )}
+    {/* </Box> */}
+
+      {/* ================= COMMENTS / SUPPORT PANEL (ONLY ADDITION) ================= */}
+      {activeTab === "Support" && (
+        <Box sx={{background: "#fff", borderRadius: 3, p: 2, boxShadow: "0 0 6px rgba(0,0,0,0.1)"}}
+        >
+          {/* Header */}
+
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+            <button style={{padding: "6px 14px", borderRadius: 20, border: "1px solid #3B5FC0", background: "#3B5FC0", color: "#fff", fontSize: 13, cursor: "pointer"}}>
+              +
+            </button>
+
+            <Box sx={{ fontWeight: 600 }}>Comments</Box>
+
+            <select style={{padding: "6px 12px", borderRadius: 20, border: "1px solid #ccc", fontSize: 13}}
+            >
+              <option>All</option>
+              <option>Feedback</option>
+              <option>Questions</option>
+              <option>Appreciation</option>
+            </select>  
+          </Box>
+
+          {/* Description */}
+          <Box sx={{ fontSize: 14, color: "#666", mb: 2 }}>
+            Give feedback, ask a question, or leave a note of appreciation
+          </Box>
+
+          {/* Info Helper Box */}
+          <Box sx={{background: "#EAF2FF", borderRadius: 2, p: 2, display: "flex", gap: 1, fontSize: 13, color: "#3B5FC0"}}
+          >
+            <Box sx={{ fontWeight: 600 }}>+</Box>
+            <Box>
+              Click <b>"Add Comment"</b> button to leave a comment anywhere in the Email Message, or
+              press and hold <b>ALT</b> to add it
+            </Box>
+          </Box>
+        </Box>
+      )}
     </Box>
-  )
+  );
 };
 
 export default SettingsPanel;
