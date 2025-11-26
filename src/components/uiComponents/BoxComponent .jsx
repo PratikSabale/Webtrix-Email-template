@@ -1,19 +1,14 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-const BoxComponent = ({ gridCount }) => {
-  const item = {
-    type: "grid",
-    gridCount,
-  };
-
+const BoxComponent = ({ gridCount, isDropped }) => {
   return (
     <Box
       draggable
       onDragStart={(e) =>
         e.dataTransfer.setData(
           "application/json",
-          JSON.stringify({ colCount: item.colCount })
+          JSON.stringify({ gridCount })
         )
       }
       sx={{
@@ -22,7 +17,6 @@ const BoxComponent = ({ gridCount }) => {
         borderRadius: 3,
         cursor: "grab",
         mb: 2,
-        "&:active": { cursor: "grabbing" },
         border: "1px solid #e5e7eb",
       }}
     >
@@ -37,12 +31,12 @@ const BoxComponent = ({ gridCount }) => {
           <Box
             key={idx}
             sx={{
-              height: 40,
+              height: isDropped ? 100 : 50,
               backgroundColor: "#e6f2ff",
               border: "2px dashed #8ab6e6",
               borderRadius: 2,
             }}
-          ></Box>
+          />
         ))}
       </Box>
     </Box>
