@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
-
+import PlayArea from "../../pages/modules/PlayArea";
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
-
 import Nav from "./Nav";
 
 const Layout = () => {
@@ -35,7 +34,9 @@ const Layout = () => {
             overflowY: "auto",
             backgroundColor: "#f6f6f6",
           }}
-        ></Box>
+        >
+          <PlayArea />
+        </Box>
 
         <Box
           sx={{
