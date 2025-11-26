@@ -1,12 +1,9 @@
-import { Avatar, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import Sidebar from "./Sidebar";
-import PlayArea from "../../pages/modules/PlayArea";
-
+import PlayArea from "../../pages/modules/PlayArea/PlayArea";
 import SettingsPanel from "../../pages/modules/Settings panel/SettingsPanel";
-// import DropAreas from "./DropArea";
 import Nav from "./Nav";
-
 
 const Layout = () => {
   return (
@@ -38,9 +35,7 @@ const Layout = () => {
             backgroundColor: "#f6f6f6",
           }}
         >
-          {/* <Box sx={{ width: 600, p: 3 }}>central editable block</Box> */}
-          {/* <DropAreas /> */}
-          <PlayArea/>
+          <PlayArea />
         </Box>
 
         <Box

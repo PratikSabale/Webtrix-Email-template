@@ -13,10 +13,8 @@ import {
   Image,
   Layout,
   RadioButton,
-  Rows,
   SelectionAll,
   ShareNetwork,
-  SquaresFour,
   TextOutdent,
   TextT,
   User,
@@ -142,7 +140,6 @@ const Sidebar = () => {
                 gap: 1,
               }}
             >
-              
               {layoutMenu.map((item, index) => {
                 const bgColor =
                   selectedLayout === index ? "#ffffff" : "#D3D3D3";

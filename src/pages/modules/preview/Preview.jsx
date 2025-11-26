@@ -28,20 +28,19 @@ const Preview = () => {
 
   return (
     <Box sx={{ height: "100vh", bgcolor: "#f4f6f8" }}>
-      {/* TOP BAR */}
-      <Box sx={{ height: 64, bgcolor: "#fff", display: "flex", alignItems: "center", px: 2, boxShadow: 1 }}>
+      <Box sx={{ bgcolor: "#fff", display: "flex", alignItems: "center" }}>
         <IconButton onClick={() => navigate(-1)}><ArrowBack /></IconButton>
-        <Typography sx={{ ml: 2, fontWeight: 600 }}>Email Preview</Typography>
+        <Typography sx={{ fontWeight: 600 }}>Email Preview</Typography>
       </Box>
 
       {/* PREVIEW AREA */}
       <Box sx={{ display: "flex", height: "calc(100vh - 64px)", gap: 0, p: 0, overflow: "hidden" }}>
 
         {/* DESKTOP */}
-        <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "stretch" }}>
-          <Box sx={{ width: DESKTOP_WIDTH, bgcolor: "#fff", borderRadius: 2, boxShadow: 3, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "stretch"}}>
+          <Box sx={{ width: DESKTOP_WIDTH, bgcolor: "#fff", borderRadius: 2, boxShadow: 3, overflow: "auto", display: "flex", flexDirection: "column"}}>
             <Box sx={{ px: 2, py: 1, bgcolor: "#eee", fontSize: 14, fontWeight: 600 }}>Desktop preview</Box>
-            <iframe title="Desktop Preview" srcDoc={emailHTML} style={{ width: "100%", height: "100%", overflow: "auto", border: "none", background: "#f4f6f8" }} />
+            <iframe title="Desktop Preview" srcDoc={emailHTML} style={{ width: "100%", height: "100%", overflow: "auto", border: "none", background: "#f4f6f8"}} />
           </Box>
         </Box>
 
