@@ -14,12 +14,35 @@ const PlayArea = () => {
     e.preventDefault();
     const data = JSON.parse(e.dataTransfer.getData("application/json"));
 
-    const newItem = {
-      ...data,
-      instanceId: Date.now(),
-    };
+    // --------------------
+    // CASE 1: Sidebar drop (contains mode)
+    // --------------------
+    if (data.mode) {
+      setItems((prev) => [
+        ...prev,
+        {
+          instanceId: crypto.randomUUID(),
+          type: "parent",
+          mode: data.mode,
+          gridCount: 1,
+        },
+      ]);
+      return;
+    }
 
-    setItems((prev) => [...prev, newItem]);
+    // --------------------
+    // CASE 2: Layout box drop (contains gridCount)
+    // --------------------
+    if (data.gridCount) {
+      setItems((prev) => [
+        ...prev,
+        {
+          instanceId: crypto.randomUUID(),
+          type: "container",
+          gridCount: data.gridCount,
+        },
+      ]);
+    }
   };
 
   const addLayout = (gridCount) => {
@@ -54,10 +77,15 @@ const PlayArea = () => {
         {items.map((item) => (
           <BoxComponent
             key={item.instanceId}
+            instanceId={item.instanceId}
             gridCount={item.gridCount}
             isDropped={true}
+            type={item.type}
+            parentId={item.parentId}
+            mode={item.mode}
           />
         ))}
+
         {/* -------------------- ADD CONTAINER BUTTON -------------------- */}
         <Box
           sx={{
@@ -69,7 +97,7 @@ const PlayArea = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            mt: 3,
+            mt: 10,
             cursor: "pointer",
             gap: 1.5,
             transition: "all 0.2s ease",

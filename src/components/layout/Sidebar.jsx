@@ -42,16 +42,20 @@ const Sidebar = () => {
   const [selectedLayout, setSelectedLayout] = useState(0);
 
   const sidebarMenu = [
-    { title: "Layout", icon: <Layout size={25} /> },
-    { title: "Image", icon: <Image size={25} /> },
-    { title: "Text", icon: <TextT size={25} /> },
-    { title: "Button", icon: <RadioButton size={25} /> },
-    { title: "Gap", icon: <ArrowsInLineVertical size={25} /> },
-    { title: "Social Network", icon: <ShareNetwork size={25} /> },
-    { title: "Menu", icon: <TextOutdent size={25} /> },
-    { title: "HTML", icon: <Code size={25} /> },
-    { title: "Banner", icon: <FlagBanner size={25} /> },
-    { title: "Video", icon: <VideoCamera size={25} /> },
+    { title: "Layout", icon: <Layout size={25} />, mode: null },
+    { title: "Image", icon: <Image size={25} />, mode: "image" },
+    { title: "Text", icon: <TextT size={25} />, mode: "text" },
+    { title: "Button", icon: <RadioButton size={25} />, mode: "button" },
+    { title: "Gap", icon: <ArrowsInLineVertical size={25} />, mode: "gap" },
+    {
+      title: "Social Network",
+      icon: <ShareNetwork size={25} />,
+      mode: "socialicon",
+    },
+    { title: "Menu", icon: <TextOutdent size={25} />, mode: "menu" },
+    { title: "HTML", icon: <Code size={25} />, mode: null },
+    { title: "Banner", icon: <FlagBanner size={25} />, mode: null },
+    { title: "Video", icon: <VideoCamera size={25} />, mode: "video" },
   ];
 
   const layoutMenu = [
@@ -87,6 +91,13 @@ const Sidebar = () => {
               arrow
             >
               <Box
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData(
+                    "application/json",
+                    JSON.stringify({ mode: item.mode })
+                  );
+                }}
                 sx={{
                   padding: 1,
                   cursor: item.title !== "Layout" ? "grab" : "pointer",
