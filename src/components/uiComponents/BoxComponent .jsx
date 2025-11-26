@@ -1,106 +1,44 @@
-// import React, { useState } from "react";
-// import { Box, Tooltip } from "@mui/material";
-// import { Image as ImageIcon, TextT, RadioButton } from "phosphor-react";
-
-// const BoxComponent = ({ gridCount, isDropped }) => {
-//   const [mode, setMode] = useState("empty");
-//   return (
-//     <Box
-//       draggable
-//       onDragStart={(e) =>
-//         e.dataTransfer.setData(
-//           "application/json",
-//           JSON.stringify({ gridCount })
-//         )
-//       }
-//       sx={{
-//         padding: 2,
-//         backgroundColor: "#ffffff",
-//         borderRadius: 3,
-//         cursor: "grab",
-//         mb: 2,
-//         border: "1px solid #e5e7eb",
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           display: "grid",
-//           gridTemplateColumns: `repeat(${gridCount}, 1fr)`,
-//           gap: 1.5,
-//         }}
-//       >
-//         {Array.from({ length: gridCount }).map((_, idx) => (
-//           <Box
-//             key={idx}
-//             sx={{
-//               height: isDropped ? 100 : 50,
-//               backgroundColor: "#e6f2ff",
-//               border: "2px dashed #8ab6e6",
-//               borderRadius: 2,
-//             }}
-//           >
-//             {isDropped && (
-//               <Box
-//                 sx={{
-//                   display: "flex",
-//                   flexDirection: "row",
-//                   justifyContent: "center",
-//                   alignItems: "center",
-//                   m: 5,
-//                   gap: 3,
-//                 }}
-//               >
-//                 <Tooltip title="image" placement="top">
-//                   <Box
-//                     sx={{ cursor: "pointer" }}
-//                     onClick={() => setMode("image")}
-//                   >
-//                     <ImageIcon size={22} color="#6d8ac7" />
-//                   </Box>
-//                 </Tooltip>
-//                 <Tooltip title="Text" placement="top">
-//                   <Box
-//                     sx={{ cursor: "pointer" }}
-//                     onClick={() => setMode("text")}
-//                   >
-//                     <TextT size={22} color="#6d8ac7" />
-//                   </Box>
-//                 </Tooltip>
-
-//                 <Tooltip title="Button" placement="top">
-//                   <Box
-//                     sx={{ cursor: "pointer" }}
-//                     onClick={() => setMode("button")}
-//                   >
-//                     <RadioButton size={22} color="#6d8ac7" />
-//                   </Box>
-//                 </Tooltip>
-//               </Box>
-//             )}
-//           </Box>
-//         ))}
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default BoxComponent;
 import React, { useState } from "react";
 import { Box, Tooltip } from "@mui/material";
 import { Image as ImageIcon, TextT, RadioButton } from "phosphor-react";
 
 const BoxComponent = ({ gridCount, isDropped }) => {
-  const [mode, setMode] = useState("empty"); // image | text | button | empty
+  const [modes, setModes] = useState(
+    Array.from({ length: gridCount }, () => ({
+      type: "empty",
+      file: null,
+      value: "",
+    }))
+  );
+
+  const updateMode = (idx, value) => {
+    setModes((prev) => {
+      const copy = [...prev];
+      copy[idx] = { type: value, file: null, value: "" };
+      return copy;
+    });
+  };
+
+  const handleTextChange = (idx, e) => {
+    const value = e.target.value;
+    setModes((prev) => {
+      const copy = [...prev];
+      copy[idx].value = value;
+      return copy;
+    });
+  };
 
   return (
     <Box
-      draggable
-      onDragStart={(e) =>
-        e.dataTransfer.setData(
-          "application/json",
-          JSON.stringify({ gridCount })
-        )
-      }
+      draggable={!isDropped}
+      onDragStart={(e) => {
+        if (!isDropped) {
+          e.dataTransfer.setData(
+            "application/json",
+            JSON.stringify({ gridCount })
+          );
+        }
+      }}
       sx={{
         padding: 2,
         backgroundColor: "#ffffff",
@@ -122,14 +60,17 @@ const BoxComponent = ({ gridCount, isDropped }) => {
             key={idx}
             sx={{
               height: isDropped ? 100 : 50,
-              backgroundColor: "#e6f2ff",
-              border: "2px dashed #8ab6e6",
+              backgroundColor:
+                modes[idx].type === "empty" ? "#e6f2ff" : "transparent",
+              border:
+                modes[idx].type === "empty" ? "2px dashed #8ab6e6" : "none",
               borderRadius: 2,
               position: "relative",
+              p: modes[idx].type !== "empty" ? 1 : 0,
             }}
           >
-            {/* 🟦 RENDER CONTENT INSIDE DROPPED BOX BASED ON MODE */}
-            {isDropped && mode !== "empty" && (
+            {/* Selected Mode Renderer */}
+            {isDropped && modes[idx].type !== "empty" && (
               <Box
                 sx={{
                   width: "100%",
@@ -139,21 +80,62 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                   alignItems: "center",
                 }}
               >
-                {mode === "image" && (
-                  <img
-                    src="https://via.placeholder.com/80"
-                    alt="placeholder"
-                    style={{ borderRadius: 8 }}
+                {/* IMAGE MODE */}
+                {modes[idx].type === "image" && (
+                  <>
+                    {modes[idx].file ? (
+                      <img
+                        src={modes[idx].file}
+                        alt="uploaded"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: 6,
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (!file) return;
+
+                          const url = URL.createObjectURL(file);
+
+                          setModes((prev) => {
+                            const copy = [...prev];
+                            copy[idx].file = url;
+                            return copy;
+                          });
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+
+                {/* SIMPLE TEXT MODE */}
+                {modes[idx].type === "text" && (
+                  <input
+                    type="text"
+                    placeholder="Type here..."
+                    value={modes[idx].value}
+                    onChange={(e) => handleTextChange(idx, e)}
+                    style={{
+                      width: "95%",
+                      height: "60%",
+                      padding: 8,
+                      borderRadius: 6,
+                      border: "1px solid #ccc",
+                      outline: "none",
+                      fontSize: 15,
+                    }}
                   />
                 )}
 
-                {mode === "text" && (
-                  <Box sx={{ fontSize: 16, fontWeight: 600, color: "#444" }}>
-                    Sample Text
-                  </Box>
-                )}
-
-                {mode === "button" && (
+                {/* BUTTON MODE */}
+                {modes[idx].type === "button" && (
                   <button
                     style={{
                       padding: "6px 16px",
@@ -170,8 +152,8 @@ const BoxComponent = ({ gridCount, isDropped }) => {
               </Box>
             )}
 
-            {/* 🟦 ACTION ICONS (Only show when dropped & empty mode) */}
-            {isDropped && mode === "empty" && (
+            {/* EMPTY MODE (icon selection) */}
+            {isDropped && modes[idx].type === "empty" && (
               <Box
                 sx={{
                   display: "flex",
@@ -185,7 +167,7 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                 <Tooltip title="Image" placement="top">
                   <Box
                     sx={{ cursor: "pointer" }}
-                    onClick={() => setMode("image")}
+                    onClick={() => updateMode(idx, "image")}
                   >
                     <ImageIcon size={22} color="#6d8ac7" />
                   </Box>
@@ -194,7 +176,7 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                 <Tooltip title="Text" placement="top">
                   <Box
                     sx={{ cursor: "pointer" }}
-                    onClick={() => setMode("text")}
+                    onClick={() => updateMode(idx, "text")}
                   >
                     <TextT size={22} color="#6d8ac7" />
                   </Box>
@@ -203,7 +185,7 @@ const BoxComponent = ({ gridCount, isDropped }) => {
                 <Tooltip title="Button" placement="top">
                   <Box
                     sx={{ cursor: "pointer" }}
-                    onClick={() => setMode("button")}
+                    onClick={() => updateMode(idx, "button")}
                   >
                     <RadioButton size={22} color="#6d8ac7" />
                   </Box>

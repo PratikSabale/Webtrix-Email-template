@@ -26,21 +26,21 @@ const PlayArea = () => {
       sx={{
         maxWidth: "60%",
         maxHeight: "80%",
-        minWidth:"60%",
-        minHeight:"80%",
+        minWidth: "60%",
+        minHeight: "80%",
         background: "#fff",
         p: 2.5,
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         position: "relative",
         left: 60,
-        overflow:"hidden"
+        overflow: "hidden",
       }}
     >
       <Typography variant="h6" sx={{ mb: 1 }}>
         Dropped Items
       </Typography>
 
-      {items.slice(0,4).map((item) => (
+      {items.slice(0, 4).map((item) => (
         <BoxComponent
           key={item.instanceId}
           gridCount={item.gridCount}
