@@ -291,9 +291,6 @@ const SettingsPanel = () => {
             <select style={{padding: "6px 12px", borderRadius: 20, border: "1px solid #ccc", fontSize: 13}}
             >
               <option>All</option>
-              <option>Feedback</option>
-              <option>Questions</option>
-              <option>Appreciation</option>
             </select>  
           </Box>
 
