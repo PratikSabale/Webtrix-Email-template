@@ -251,7 +251,7 @@ const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
               </Box>
             )}
 
-              {/* {isDropped && modes[idx].type === "empty" && (
+              {isDropped && modes[idx].type === "empty" && (
                 <Box
                   sx={{
                     display: "flex",
@@ -289,7 +289,7 @@ const BoxComponent = ({ instanceId, gridCount, isDropped, mode }) => {
                     </Box>
                   </Tooltip>
                 </Box>
-              )} */}
+              )}
           </Box>
         ))}
       </Box>
