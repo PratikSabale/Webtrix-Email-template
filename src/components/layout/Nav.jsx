@@ -8,7 +8,15 @@ const Nav = () => {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{width: "100%", height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between", px: 2, boxShadow: 1, backgroundColor: "#fff"}} >
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "#fff",
+      }}
+    >
       <Avatar
         src={webtrixLogo}
         variant="square"
@@ -16,8 +24,8 @@ const Nav = () => {
         onClick={() => navigate("/")}
       />
 
-      <IconButton onClick={() => navigate("/preview")} >
-        <PreviewRounded sx={{fontSize: 32}} />
+      <IconButton onClick={() => navigate("/preview")}>
+        <PreviewRounded sx={{ fontSize: 32 }} />
       </IconButton>
     </Box>
   );
