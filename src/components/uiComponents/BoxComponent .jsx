@@ -1,7 +1,9 @@
-import React from "react";
-import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Tooltip } from "@mui/material";
+import { Image as ImageIcon, TextT, RadioButton } from "phosphor-react";
 
 const BoxComponent = ({ gridCount, isDropped }) => {
+  const [mode, setMode] = useState("empty");
   return (
     <Box
       draggable
@@ -36,7 +38,46 @@ const BoxComponent = ({ gridCount, isDropped }) => {
               border: "2px dashed #8ab6e6",
               borderRadius: 2,
             }}
-          />
+          >
+            {isDropped && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  m: 5,
+                  gap: 3,
+                }}
+              >
+                <Tooltip title="image" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => setMode("image")}
+                  >
+                    <ImageIcon size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
+                <Tooltip title="Text" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => setMode("text")}
+                  >
+                    <TextT size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
+
+                <Tooltip title="Button" placement="top">
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => setMode("button")}
+                  >
+                    <RadioButton size={22} color="#6d8ac7" />
+                  </Box>
+                </Tooltip>
+              </Box>
+            )}
+          </Box>
         ))}
       </Box>
     </Box>
