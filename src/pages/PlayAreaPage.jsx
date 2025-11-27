@@ -3,29 +3,28 @@ import { Paper, Typography, Box } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   draggedItemState,
-  playAreaItemsState,
+  playAreaItemsWithHistoryState ,
   selectedItemState,
 } from "../recoil/layoutAtoms";
 
 export default function PlayAreaPage() {
   const draggedItem = useRecoilValue(draggedItemState);
-  const [playAreaItems, setPlayAreaItems] = useRecoilState(playAreaItemsState);
+  const [playAreaItems, setPlayAreaItems] = useRecoilState(playAreaItemsWithHistoryState );
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
-
   const textRefs = useRef({});
 
-  // ROOT DROP — Container Only
+  // ROOT DROP — Add Container
   const handleRootDrop = () => {
     if (!draggedItem || draggedItem.type !== "Container") return;
 
     setPlayAreaItems((prev) => [
       ...prev,
-      { id: Date.now(), type: "Container", gridColumns: 1, children: [] },
+      { id: Date.now(), type: "Container", gridColumns: 1, cells: [[]] },
     ]);
   };
 
-  // DROP INSIDE CONTAINER — Child Elements
-  const handleDropInsideContainer = (containerId) => {
+  // DROP CHILD ELEMENT INSIDE SPECIFIC CELL
+  const handleDropInsideCell = (containerId, cellIndex) => {
     if (!draggedItem || draggedItem.type === "Container") return;
 
     const defaults = {
@@ -52,25 +51,30 @@ export default function PlayAreaPage() {
     };
 
     setPlayAreaItems((prev) =>
-      prev.map((box) =>
-        box.id === containerId
-          ? { ...box, children: [...box.children, newChild] }
-          : box
+      prev.map((container) =>
+        container.id === containerId
+          ? {
+              ...container,
+              cells: container.cells.map((cell, idx) =>
+                idx === cellIndex ? [...cell, newChild] : cell
+              ),
+            }
+          : container
       )
     );
   };
 
-  // APPLY STYLE CHANGES (SAFE)
+  // APPLY STYLE CHANGES
   React.useEffect(() => {
     if (!selectedItem || !selectedItem.id) return;
 
     setPlayAreaItems((prev) =>
       prev.map((container) => ({
         ...container,
-        children: container.children.map((child) =>
-          child.id === selectedItem.id
-            ? { ...child, ...selectedItem } // only override props, not structure
-            : child
+        cells: container.cells.map((cell) =>
+          cell.map((child) =>
+            child.id === selectedItem.id ? { ...child, ...selectedItem } : child
+          )
         ),
       }))
     );
@@ -94,7 +98,6 @@ export default function PlayAreaPage() {
         Play Area
       </Typography>
 
-      {/* CONTAINERS */}
       {playAreaItems.map((container) => (
         <Paper
           key={container.id}
@@ -114,7 +117,6 @@ export default function PlayAreaPage() {
         >
           <Typography variant="subtitle1">Container</Typography>
 
-          {/* CHILDREN GRID */}
           <Box
             sx={{
               mt: 2,
@@ -125,77 +127,97 @@ export default function PlayAreaPage() {
               gridTemplateColumns: `repeat(${container.gridColumns}, 1fr)`,
               gap: 1.5,
             }}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => handleDropInsideContainer(container.id)}
           >
-            {container.children.map((child) => (
+            {container.cells.map((cell, cellIndex) => (
               <Paper
-                key={child.id}
+                key={cellIndex}
                 sx={{
-                  p: 2,
-                  mt: 1,
-                  border:
-                    selectedItem?.id === child.id
-                      ? "2px solid blue"
-                      : "1px solid #ccc",
-                  cursor: "pointer",
+                  p: 1,
+                  border: "1px dashed #ccc",
+                  minHeight: "80px", // ✅ increase min-height for empty cells
+                  display: "flex", // ✅ optional: allows children to stack
+                  flexDirection: "column",
+                  gap: 4,
                 }}
-                onMouseDown={(e) => {
-                  e.stopPropagation();
-                  setSelectedItem(child);
-                }}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => handleDropInsideCell(container.id, cellIndex)}
               >
-                {/* CONTENT EDITABLE TEXT */}
-                <div
-                  ref={(el) => (textRefs.current[child.id] = el)}
-                  contentEditable={
-                    child.type === "Paragraph" || child.type === "Title"
-                  }
-                  suppressContentEditableWarning
-                  style={{
-                    fontSize: `${child.fontSize}px`,
-                    fontWeight: child.fontWeight,
-                    color: child.color,
-                    textAlign: child.textAlign,
-                    whiteSpace: "pre-wrap",
-                    wordBreak: "break-word",
-                  }}
-                  onFocus={(e) => {
-                    if (
-                      child.content === "Add your text here" ||
-                      child.content === "Add your title here"
-                    ) {
-                      e.currentTarget.textContent = "";
-                    }
-                  }}
-                  onInput={(e) => {}}
-                  onBlur={(e) => {
-                    const updatedText = e.currentTarget.textContent;
+                {cell.length === 0 && (
+                  <Typography
+                    variant="caption"
+                    sx={{ color: "#999", textAlign: "center", mt: 2 }}
+                  >
+                    Drop elements here
+                  </Typography>
+                )}
 
-                    // UPDATE CHILD ONLY (SAFE)
-                    setPlayAreaItems((prev) =>
-                      prev.map((box) =>
-                        box.id === container.id
-                          ? {
-                              ...box,
-                              children: box.children.map((c) =>
-                                c.id === child.id
-                                  ? { ...c, content: updatedText }
-                                  : c
-                              ),
-                            }
-                          : box
-                      )
-                    );
-
-                    setSelectedItem((prev) => ({
-                      ...prev,
-                      content: updatedText,
-                    }));
-                  }}
-                >
-                  {child.content}
-                </div>
+                {cell.map((child) => (
+                  <Paper
+                    key={child.id}
+                    sx={{
+                      p: 2,
+                      mt: 1,
+                      border:
+                        selectedItem?.id === child.id
+                          ? "2px solid blue"
+                          : "1px solid #ccc",
+                      cursor: "pointer",
+                    }}
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                      setSelectedItem(child);
+                    }}
+                  >
+                    <div
+                      ref={(el) => (textRefs.current[child.id] = el)}
+                      contentEditable={
+                        child.type === "Paragraph" || child.type === "Title"
+                      }
+                      suppressContentEditableWarning
+                      style={{
+                        fontSize: `${child.fontSize}px`,
+                        fontWeight: child.fontWeight,
+                        color: child.color,
+                        textAlign: child.textAlign,
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                      }}
+                      onFocus={(e) => {
+                        if (
+                          child.content === "Add your text here" ||
+                          child.content === "Add your title here"
+                        ) {
+                          e.currentTarget.textContent = "";
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const updatedText = e.currentTarget.textContent;
+                        setPlayAreaItems((prev) =>
+                          prev.map((c) =>
+                            c.id === container.id
+                              ? {
+                                  ...c,
+                                  cells: c.cells.map((cell) =>
+                                    cell.map((ch) =>
+                                      ch.id === child.id
+                                        ? { ...ch, content: updatedText }
+                                        : ch
+                                    )
+                                  ),
+                                }
+                              : c
+                          )
+                        );
+                        setSelectedItem((prev) => ({
+                          ...prev,
+                          content: updatedText,
+                        }));
+                      }}
+                    >
+                      {child.content}
+                    </div>
+                  </Paper>
+                ))}
               </Paper>
             ))}
           </Box>

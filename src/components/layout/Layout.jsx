@@ -35,7 +35,6 @@ const Layout = () => {
             backgroundColor: "#f6f6f6",
           }}
         >
-          {" "}
           <PlayAreaPage />
         </Box>
 
