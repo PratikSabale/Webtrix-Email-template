@@ -1,46 +1,28 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Nav from "./Nav";
-import { Box } from "@mui/material";
 import PropertiesPage from "../../pages/PropertiesPage";
 import PlayAreaPage from "../../pages/PlayAreaPage";
 
 const Layout = () => {
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <Box
-        sx={{
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          px: 2,
-          borderBottom: "1px solid #ddd",
-          backgroundColor: "#fff",
-        }}
-      >
+    <div className="h-screen flex flex-col">
+      {/* Top Navbar */}
+      <div className="h-[60px] flex items-center justify-between px-2 border-b border-gray-300 bg-white">
         <Nav />
-      </Box>
+      </div>
 
-      <Box sx={{ flex: 1, display: "flex", overflow: "hidden" }}>
+      {/* Main Content */}
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
-        <Box
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            overflowY: "auto",
-            backgroundColor: "#f6f6f6",
-          }}
-        >
+        <div className="flex-1 flex justify-center items-start overflow-y-auto bg-[#f6f6f6]">
           <PlayAreaPage />
-        </Box>
+        </div>
 
         <PropertiesPage />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
