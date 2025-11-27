@@ -23,7 +23,6 @@ const Preview = () => {
 
   const [device, setDevice] = useState("desktop");
   const [orientation, setOrientation] = useState("portrait");
-  const [zoom, setZoom] = useState(1);
 
   const getDeviceSize = () => {
     if (device === "desktop") return { width: 1280, height: 800 };
@@ -46,10 +45,6 @@ const Preview = () => {
   };
 
   const autoFitScale = getAutoFitScale();
-
-  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.1, 2));
-  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.1, 0.5));
-  const handleZoomReset = () => setZoom(1);
 
   const handleCopyHTML = () => {
     navigator.clipboard.writeText(rawHTML);
@@ -97,27 +92,6 @@ const Preview = () => {
             Copy HTML
           </button>
         </div>
-
-        <div className="flex items-center gap-2">
-          <button onClick={handleZoomOut}>
-            <FiZoomOut size={28} />
-          </button>
-          <input
-            type="range"
-            min={0.5}
-            max={2}
-            step={0.1}
-            value={zoom}
-            onChange={(e) => setZoom(Number(e.target.value))}
-            className="w-28"
-          />
-          <button onClick={handleZoomIn}>
-            <FiZoomIn size={28} />
-          </button>
-          <button onClick={handleZoomReset}>
-            <FiRefreshCw size={28} />
-          </button>
-        </div>
       </div>
 
       {/* Main Preview Container */}
@@ -129,7 +103,7 @@ const Preview = () => {
           style={{
             width,
             height,
-            transform: `scale(${zoom * autoFitScale})`,
+            transform: `scale(${autoFitScale})`,
           }}
           className={`bg-white overflow-hidden shadow-xl ${
             device === "desktop"
