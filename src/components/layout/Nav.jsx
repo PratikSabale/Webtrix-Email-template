@@ -1,4 +1,3 @@
-import { Avatar, Box, IconButton } from "@mui/material";
 import React from "react";
 import webtrixLogo from "../../assets/webtrix-logo.png";
 import { useNavigate } from "react-router-dom";
@@ -13,40 +12,39 @@ const Nav = () => {
   const redo = useSetRecoilState(redoState);
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "#fff",
-        padding: "8px 16px",
-      }}
-    >
+    <div className="w-full flex items-center justify-between bg-white px-4 py-2">
       {/* Left - Logo */}
-      <Avatar
+      <img
         src={webtrixLogo}
-        variant="square"
-        sx={{ cursor: "pointer" }}
+        className="w-10 h-10 cursor-pointer object-contain"
         onClick={() => navigate("/")}
       />
 
       {/* Center - Undo / Redo */}
-      <Box sx={{ display: "flex", gap: 2 }}>
-        <IconButton onClick={undo}>
-          <Undo sx={{ fontSize: 28 }} />
-        </IconButton>
+      <div className="flex gap-4">
+        <button
+          className="p-2 rounded-full hover:bg-gray-200 transition"
+          onClick={undo}
+        >
+          <Undo style={{ fontSize: 28 }} />
+        </button>
 
-        <IconButton onClick={redo}>
-          <Redo sx={{ fontSize: 28 }} />
-        </IconButton>
-      </Box>
+        <button
+          className="p-2 rounded-full hover:bg-gray-200 transition"
+          onClick={redo}
+        >
+          <Redo style={{ fontSize: 28 }} />
+        </button>
+      </div>
 
       {/* Right - Preview */}
-      <IconButton onClick={() => navigate("/preview")}>
-        <PreviewRounded sx={{ fontSize: 32 }} />
-      </IconButton>
-    </Box>
+      <button
+        className="p-2 rounded-full hover:bg-gray-200 transition"
+        onClick={() => navigate("/preview")}
+      >
+        <PreviewRounded style={{ fontSize: 32 }} />
+      </button>
+    </div>
   );
 };
 
