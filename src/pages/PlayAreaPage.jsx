@@ -3,13 +3,15 @@ import { Paper, Typography, Box } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   draggedItemState,
-  playAreaItemsWithHistoryState ,
+  playAreaItemsWithHistoryState,
   selectedItemState,
 } from "../recoil/layoutAtoms";
 
 export default function PlayAreaPage() {
   const draggedItem = useRecoilValue(draggedItemState);
-  const [playAreaItems, setPlayAreaItems] = useRecoilState(playAreaItemsWithHistoryState );
+  const [playAreaItems, setPlayAreaItems] = useRecoilState(
+    playAreaItemsWithHistoryState
+  );
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
   const textRefs = useRef({});
 
@@ -115,13 +117,11 @@ export default function PlayAreaPage() {
             setSelectedItem(container);
           }}
         >
-          <Typography variant="subtitle1">Container</Typography>
-
           <Box
             sx={{
               mt: 2,
               p: 2,
-              border: "2px dashed #aaa",
+              // border: "2px dashed #aaa",
               minHeight: "80px",
               display: "grid",
               gridTemplateColumns: `repeat(${container.gridColumns}, 1fr)`,
@@ -134,10 +134,11 @@ export default function PlayAreaPage() {
                 sx={{
                   p: 1,
                   border: "1px dashed #ccc",
-                  minHeight: "80px", // ✅ increase min-height for empty cells
-                  display: "flex", // ✅ optional: allows children to stack
+                  minHeight: "80px",
+                  display: "flex",
                   flexDirection: "column",
                   gap: 4,
+                  boxShadow: 0,
                 }}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDropInsideCell(container.id, cellIndex)}
@@ -181,6 +182,7 @@ export default function PlayAreaPage() {
                         textAlign: child.textAlign,
                         whiteSpace: "pre-wrap",
                         wordBreak: "break-word",
+                        outline: "none",
                       }}
                       onFocus={(e) => {
                         if (
