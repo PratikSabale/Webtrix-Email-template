@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { Paper, Typography, Box } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   draggedItemState,
@@ -83,87 +82,64 @@ export default function PlayAreaPage() {
   }, [selectedItem]);
 
   return (
-    <Paper
-      sx={{
-        width: { xs: "100%", sm: "100%", md: "60%" },
-        minHeight: "80%",
-        background: "#fff",
-        p: 2.5,
-        border: "2px dashed #777",
-        overflowY: "auto",
-        left: { xs: 0, md: 60 },
-      }}
+    <div
+      className="
+        w-full md:w-[60%] min-h-[80%] bg-white p-6 border-2 border-dashed border-gray-600 
+        overflow-y-auto relative
+      "
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleRootDrop}
     >
-      <Typography variant="h6" textAlign="center">
-        Play Area
-      </Typography>
+      <h2 className="text-xl font-semibold text-center">Play Area</h2>
 
       {playAreaItems.map((container) => (
-        <Paper
+        <div
           key={container.id}
-          sx={{
-            p: 2,
-            mt: 2,
-            border:
+          className={`
+            p-4 mt-4 border-2 cursor-pointer rounded-md 
+            ${
               selectedItem?.id === container.id
-                ? "2px solid blue"
-                : "2px solid #555",
-            cursor: "pointer",
-          }}
+                ? "border-blue-500"
+                : "border-gray-600"
+            }
+          `}
           onMouseDown={(e) => {
             e.stopPropagation();
             setSelectedItem(container);
           }}
         >
-          <Box
-            sx={{
-              mt: 2,
-              p: 2,
-              // border: "2px dashed #aaa",
-              minHeight: "80px",
-              display: "grid",
+          <div
+            className="
+              mt-4 p-4 min-h-[80px] grid gap-4 
+            "
+            style={{
               gridTemplateColumns: `repeat(${container.gridColumns}, 1fr)`,
-              gap: 1.5,
             }}
           >
             {container.cells.map((cell, cellIndex) => (
-              <Paper
+              <div
                 key={cellIndex}
-                sx={{
-                  p: 1,
-                  border: "1px dashed #ccc",
-                  minHeight: "80px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 4,
-                  boxShadow: 0,
-                }}
+                className="p-2 border border-dashed border-gray-300 min-h-[80px] flex flex-col gap-4"
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDropInsideCell(container.id, cellIndex)}
               >
                 {cell.length === 0 && (
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "#999", textAlign: "center", mt: 2 }}
-                  >
+                  <p className="text-gray-400 text-center mt-2 text-sm">
                     Drop elements here
-                  </Typography>
+                  </p>
                 )}
 
                 {cell.map((child) => (
-                  <Paper
+                  <div
                     key={child.id}
-                    sx={{
-                      p: 2,
-                      mt: 1,
-                      border:
+                    className={`
+                      p-4 mt-2 rounded border cursor-pointer 
+                      ${
                         selectedItem?.id === child.id
-                          ? "2px solid blue"
-                          : "1px solid #ccc",
-                      cursor: "pointer",
-                    }}
+                          ? "border-2 border-blue-500"
+                          : "border border-gray-300"
+                      }
+                    `}
                     onMouseDown={(e) => {
                       e.stopPropagation();
                       setSelectedItem(child);
@@ -218,13 +194,13 @@ export default function PlayAreaPage() {
                     >
                       {child.content}
                     </div>
-                  </Paper>
+                  </div>
                 ))}
-              </Paper>
+              </div>
             ))}
-          </Box>
-        </Paper>
+          </div>
+        </div>
       ))}
-    </Paper>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { Paper, Typography } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { draggedItemState } from "../../recoil/layoutAtoms";
 
@@ -20,25 +19,19 @@ export default function SidebarPage() {
   };
 
   return (
-    <Paper sx={{ p: 3, width: "260px", m: 3 }}>
-      <Typography variant="h6">Sidebar</Typography>
+    <div className="p-6 w-[260px] m-3 bg-white rounded-lg shadow">
+      <h2 className="text-xl font-semibold mb-2">Sidebar</h2>
 
       {items.map((item) => (
-        <Paper
+        <div
           key={item.type}
-          sx={{
-            p: 2,
-            mt: 2,
-            textAlign: "center",
-            cursor: "grab",
-            userSelect: "none",
-          }}
+          className="p-3 mt-3 text-center cursor-grab select-none bg-gray-100 rounded-md shadow-sm hover:bg-gray-200 transition"
           draggable
           onDragStart={() => handleDragStart(item.type)}
         >
           {item.label}
-        </Paper>
+        </div>
       ))}
-    </Paper>
+    </div>
   );
 }
