@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   draggedItemState,
   playAreaItemsWithHistoryState,
   selectedItemState,
 } from "../recoil/layoutAtoms";
+import { generateHTML } from "../utils/templateHTML";
 
 export default function PlayAreaPage() {
   const draggedItem = useRecoilValue(draggedItemState);
@@ -81,6 +82,11 @@ export default function PlayAreaPage() {
     );
   }, [selectedItem]);
 
+  useEffect(() => {
+    const html = generateHTML(playAreaItems);
+    localStorage.setItem("emailTemplate", html);
+  }, [playAreaItems]);
+
   return (
     <div
       className="
@@ -90,8 +96,6 @@ export default function PlayAreaPage() {
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleRootDrop}
     >
-      <h2 className="text-xl font-semibold text-center">Play Area</h2>
-
       {playAreaItems.map((container) => (
         <div
           key={container.id}
@@ -110,7 +114,7 @@ export default function PlayAreaPage() {
         >
           <div
             className="
-              mt-4 p-4 min-h-[80px] grid gap-4 
+              min-h-[80px] grid gap-4 
             "
             style={{
               gridTemplateColumns: `repeat(${container.gridColumns}, 1fr)`,
@@ -133,7 +137,7 @@ export default function PlayAreaPage() {
                   <div
                     key={child.id}
                     className={`
-                      p-4 mt-2 rounded border cursor-pointer 
+                      p-4  rounded border cursor-pointer 
                       ${
                         selectedItem?.id === child.id
                           ? "border-2 border-blue-500"

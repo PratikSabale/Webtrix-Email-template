@@ -1,22 +1,24 @@
 import { atom, selector } from "recoil";
 
+// Dragged item during drag & drop
 export const draggedItemState = atom({
   key: "draggedItemState",
   default: null,
 });
 
+// PlayArea items
 export const playAreaItemsState = atom({
   key: "playAreaItemsState",
   default: [],
 });
 
+// Selected item in PropertiesPanel
 export const selectedItemState = atom({
   key: "selectedItemState",
   default: null,
 });
 
-/* ------------------ UNDO / REDO HISTORY STACKS ------------------ */
-
+// Undo/Redo history
 export const historyState = atom({
   key: "historyState",
   default: [],
@@ -27,68 +29,44 @@ export const futureState = atom({
   default: [],
 });
 
-/* ------------------ WRAPPED STATE SETTER WITH HISTORY  ------------------ */
-
+// Selector with history support
 export const playAreaItemsWithHistoryState = selector({
   key: "playAreaItemsWithHistoryState",
   get: ({ get }) => get(playAreaItemsState),
-
   set: ({ get, set }, newValue) => {
     const current = get(playAreaItemsState);
-
-    // Push current state into history
     set(historyState, [...get(historyState), current]);
-
-    // Clear redo stack
     set(futureState, []);
-
-    // Update actual items
     set(playAreaItemsState, newValue);
   },
 });
 
-/* ------------------ UNDO ------------------ */
-
+// Undo
 export const undoState = selector({
   key: "undoState",
   get: () => null,
   set: ({ get, set }) => {
     const history = get(historyState);
-    if (history.length === 0) return;
-
+    if (!history.length) return;
     const current = get(playAreaItemsState);
     const previous = history[history.length - 1];
-
-    // Move current → future stack
     set(futureState, [...get(futureState), current]);
-
-    // Remove previous from history
-    set(historyState, history.slice(0, history.length - 1));
-
-    // Restore previous
+    set(historyState, history.slice(0, -1));
     set(playAreaItemsState, previous);
   },
 });
 
-/* ------------------ REDO ------------------ */
-
+// Redo
 export const redoState = selector({
   key: "redoState",
   get: () => null,
   set: ({ get, set }) => {
     const future = get(futureState);
-    if (future.length === 0) return;
-
+    if (!future.length) return;
     const current = get(playAreaItemsState);
     const next = future[future.length - 1];
-
-    // Move current → history
     set(historyState, [...get(historyState), current]);
-
-    // Remove item from redo stack
-    set(futureState, future.slice(0, future.length - 1));
-
-    // Set forward state
+    set(futureState, future.slice(0, -1));
     set(playAreaItemsState, next);
   },
 });
