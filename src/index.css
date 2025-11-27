@@ -7,4 +7,6 @@ body {
   padding: 0;
 }
 
-.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
