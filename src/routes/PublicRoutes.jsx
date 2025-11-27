@@ -1,14 +1,18 @@
-import React from "react";
+
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Layout from "../components/layout/Layout";
-import Preview from "../pages/Preview";
+
+const Layout = lazy(() => import("../components/layout/Layout"));
+const Preview = lazy(() => import("../pages/Preview"));
 
 const PublicRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />} />
-      <Route path="/preview" element={<Preview />} />
-    </Routes>
+    <Suspense fallback={<div style={{ textAlign: "center", marginTop: "40vh", fontSize: "18px" }}>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/preview" element={<Preview />} />
+      </Routes>
+    </Suspense>
   );
 };
 
