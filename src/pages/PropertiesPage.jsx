@@ -1,6 +1,9 @@
 import { useRecoilState } from "recoil";
 import React from "react";
-import { playAreaItemsState, selectedItemState } from "../recoil/layoutAtoms";
+import {
+  playAreaItemsWithHistoryState,
+  selectedItemState,
+} from "../recoil/layoutAtoms";
 import {
   Box,
   Typography,
@@ -17,7 +20,7 @@ import {
 
 export default function PropertiesPanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
-  const [items, setItems] = useRecoilState(playAreaItemsState);
+  const [items, setItems] = useRecoilState(playAreaItemsWithHistoryState);
 
   const PANEL_WIDTH = 320;
 
@@ -40,30 +43,65 @@ export default function PropertiesPanel() {
       </Paper>
     );
 
-  // 👉 FIX: Update child items inside container
+  // ⭐ UPDATED: Correct merging & expansion logic
   const updateItem = (updates) => {
     setItems((prev) =>
       prev.map((container) => {
-        // Update container itself
-        if (container.id === selectedItem.id) {
+        const isTarget = container.id === selectedItem.id;
+
+        if (isTarget) {
+          // ⭐ gridColumns changed — adjust cells
+          if (updates.gridColumns) {
+            const newCols = updates.gridColumns;
+            const oldCols = container.cells.length;
+
+            let newCells = [...container.cells];
+
+            // ----------------------------
+            // ⭐ CASE 1: Increase columns
+            // ----------------------------
+            if (newCols > oldCols) {
+              while (newCells.length < newCols) newCells.push([]);
+            }
+
+            // ----------------------------
+            // ⭐ CASE 2: Decrease columns
+            // Merge removed cells into cell[0]
+            // ----------------------------
+            if (newCols < oldCols) {
+              const removedCells = newCells.slice(newCols);
+
+              removedCells.forEach((cell) => {
+                newCells[0] = [...newCells[0], ...cell];
+              });
+
+              newCells = newCells.slice(0, newCols);
+            }
+
+            return {
+              ...container,
+              ...updates,
+              cells: newCells,
+            };
+          }
+
+          // Normal update
           return { ...container, ...updates };
         }
 
-        // Update inside children
-        if (container.children?.length) {
-          return {
-            ...container,
-            children: container.children.map((child) =>
+        // Update child items
+        return {
+          ...container,
+          cells: container.cells?.map((cell) =>
+            cell.map((child) =>
               child.id === selectedItem.id ? { ...child, ...updates } : child
-            ),
-          };
-        }
-
-        return container;
+            )
+          ),
+        };
       })
     );
 
-    // Update recoil selected value
+    // Keep selected item updated
     setSelectedItem((prev) => ({ ...prev, ...updates }));
   };
 
@@ -119,7 +157,6 @@ export default function PropertiesPanel() {
             {selectedItem.type} Settings
           </Typography>
 
-          {/* ---------------- TITLE → Heading Tag ---------------- */}
           {selectedItem.type === "Title" && (
             <TextField
               select
@@ -131,7 +168,6 @@ export default function PropertiesPanel() {
               onChange={(e) => {
                 const tag = e.target.value;
 
-                // Map heading tag → font size
                 const headingSizes = {
                   h1: 32,
                   h2: 28,
@@ -143,7 +179,7 @@ export default function PropertiesPanel() {
 
                 updateItem({
                   headingTag: tag,
-                  fontSize: headingSizes[tag], // apply mapped size
+                  fontSize: headingSizes[tag],
                 });
               }}
             >
@@ -155,7 +191,6 @@ export default function PropertiesPanel() {
             </TextField>
           )}
 
-          {/* ---------------- PARAGRAPH → Font Size ---------------- */}
           {selectedItem.type === "Paragraph" && (
             <TextField
               label="Font Size"
@@ -169,8 +204,6 @@ export default function PropertiesPanel() {
               }
             />
           )}
-
-          {/* ------------ COMMON SETTINGS FOR BOTH ------------- */}
 
           <TextField
             select
@@ -389,7 +422,7 @@ export default function PropertiesPanel() {
         </>
       )}
 
-      {/* ---------------- Space ---------------- */}
+      {/* ---------------- Space Settings ---------------- */}
       {selectedItem.type === "Space" && (
         <>
           <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
