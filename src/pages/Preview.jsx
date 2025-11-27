@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
 import {
-  ArrowBack,
-  Monitor,
-  PhoneAndroid,
-  Tablet,
-  ZoomIn,
-  ZoomOut,
-  Refresh,
-  ScreenRotation,
-} from "@mui/icons-material";
+  FiArrowLeft,
+  FiMonitor,
+  FiSmartphone,
+  FiTablet,
+  FiZoomIn,
+  FiZoomOut,
+  FiRefreshCw,
+  FiRotateCw,
+} from "react-icons/fi"; // Feather Icons
 import { useNavigate } from "react-router-dom";
 
 const Preview = () => {
@@ -69,7 +69,7 @@ const Preview = () => {
         {/* Back + Title */}
         <div className="flex items-center gap-2">
           <button onClick={() => navigate(-1)}>
-            <ArrowBack />
+            <FiArrowLeft size={28} />
           </button>
           <p className="font-semibold">Email Preview</p>
         </div>
@@ -77,13 +77,13 @@ const Preview = () => {
         {/* Device buttons */}
         <div className="flex items-center gap-2">
           <button onClick={() => setDevice("desktop")}>
-            <Monitor />
+            <FiMonitor size={28} />
           </button>
           <button onClick={() => setDevice("tablet")}>
-            <Tablet />
+            <FiTablet size={28} />
           </button>
           <button onClick={() => setDevice("mobile")}>
-            <PhoneAndroid />
+            <FiSmartphone size={28} />
           </button>
 
           {device !== "desktop" && (
@@ -94,7 +94,7 @@ const Preview = () => {
                 )
               }
             >
-              <ScreenRotation />
+              <FiRotateCw size={28} />
             </button>
           )}
         </div>
@@ -102,7 +102,7 @@ const Preview = () => {
         {/* Zoom Controls */}
         <div className="flex items-center gap-2">
           <button onClick={handleZoomOut}>
-            <ZoomOut />
+            <FiZoomOut size={28} />
           </button>
 
           <input
@@ -116,11 +116,11 @@ const Preview = () => {
           />
 
           <button onClick={handleZoomIn}>
-            <ZoomIn />
+            <FiZoomIn size={28} />
           </button>
 
           <button onClick={handleZoomReset}>
-            <Refresh />
+            <FiRefreshCw size={28} />
           </button>
         </div>
       </div>
