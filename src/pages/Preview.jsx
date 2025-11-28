@@ -113,30 +113,24 @@ const Preview = () => {
               : "rounded-2xl border-[14px] border-gray-900"
           }`}
         >
-          <div className="h-10 bg-gray-100 border-b border-gray-300 flex items-center px-4 text-sm font-semibold">
-            User / Organization Name
-          </div>
-
           {/* UPDATED IFRAME (ONLY CHANGE) */}
           <iframe
             title="Email Preview"
             srcDoc={`<html>
-                        <head>
-                          <style>
-                            html,body{
-                              margin:0;
-                              padding:0;
-                            }
-                          </style>
-                        </head>
-                        <body>
-                          <div class="template-wrapper">
-                            ${rawHTML}
-                          </div>
-                        </body>
-                      </html>`}
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body { margin:0; padding:0; font-family:Arial,sans-serif; }
+                table { border-collapse: collapse; }
+                img { max-width:100%; display:block; }
+              </style>
+            </head>
+            <body>
+              ${rawHTML}
+            </body>
+          </html>`}
             className="w-full h-full border-none"
-            style={{ overscrollBehavior: "none" }}
           />
         </div>
       </div>
